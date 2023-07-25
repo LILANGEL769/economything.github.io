@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Federal Budget Calculator</title>
+  <style>
+    /* Add your custom CSS styles here */
+  </style>
+</head>
+<body>
+  <h1>Federal Budget Calculator</h1>
+
+  <label for="gdp-growth">GDP Growth (Yearly):</label>
+  <input type="number" id="gdp-growth" step="0.01" min="0" required>
+
+  <label for="gdp-per-capita">GDP Per Capita:</label>
+  <input type="number" id="gdp-per-capita" required>
+
+  <label for="unemployment-rate">Unemployment Rate:</label>
+  <input type="number" id="unemployment-rate" step="0.01" min="0" required>
+
+  <label for="poverty-rate">Poverty Rate:</label>
+  <input type="number" id="poverty-rate" step="0.01" min="0" required>
+
+  <label for="homeless-rate">Homeless Rate:</label>
+  <input type="number" id="homeless-rate" step="0.01" min="0" required>
+
+  <label for="economic-score">Overall Economic Score:</label>
+  <input type="number" id="economic-score" required>
+
+  <label for="inflation-rate">Inflation Rate (Annualized):</label>
+  <input type="number" id="inflation-rate" step="0.01" min="0" required>
+
+  <label for="interest-rate">Interest Rate:</label>
+  <input type="number" id="interest-rate" step="0.01" min="0" required>
+
+  <label for="national-debt">National Debt:</label>
+  <input type="number" id="national-debt" required>
+
+  <label for="manufacturing-jobs">Manufacturing Jobs:</label>
+  <input type="number" id="manufacturing-jobs" required>
+
+  <label for="median-house-price">Median House Price:</label>
+  <input type="number" id="median-house-price" required>
+
+  <button id="calculate-button">Calculate Budget</button>
+
+  <div id="budget-result"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const calculateButton = document.getElementById('calculate-button');
+      calculateButton.addEventListener('click', calculateBudget);
+    });
+
+    function calculateBudget() {
+      const gdpGrowth = parseFloat(document.getElementById('gdp-growth').value);
+      const gdpPerCapita = parseFloat(document.getElementById('gdp-per-capita').value);
+      const unemploymentRate = parseFloat(document.getElementById('unemployment-rate').value);
+      const povertyRate = parseFloat(document.getElementById('poverty-rate').value);
+      const homelessRate = parseFloat(document.getElementById('homeless-rate').value);
+      const economicScore = parseFloat(document.getElementById('economic-score').value);
+      const inflationRate = parseFloat(document.getElementById('inflation-rate').value);
+      const interestRate = parseFloat(document.getElementById('interest-rate').value);
+      const nationalDebt = parseFloat(document.getElementById('national-debt').value);
+      const manufacturingJobs = parseFloat(document.getElementById('manufacturing-jobs').value);
+      const medianHousePrice = parseFloat(document.getElementById('median-house-price').value);
+
+      // Calculate the budget using more realistic formulas and factors.
+      const economicImpact = (gdpGrowth + (gdpPerCapita / 100)) * (1 - unemploymentRate) * (1 - povertyRate) * (1 - homelessRate);
+      const inflationImpact = economicImpact * (1 - inflationRate);
+      const debtInterest = interestRate * nationalDebt;
+      const jobsImpact = manufacturingJobs * 5000;
+      const housingImpact = medianHousePrice / 2000;
+
+      const budget = economicImpact * economicScore - inflationImpact - debtInterest + jobsImpact - housingImpact;
+
+      displayBudgetResult(budget);
+    }
+
+    function displayBudgetResult(budget) {
+      const budgetResult = document.getElementById('budget-result');
+      budgetResult.textContent = `Calculated Budget: $${formatNumber(budget)}`;
+    }
+
+    function formatNumber(number) {
+      return number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  </script>
+</body>
+</html>
