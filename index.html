@@ -1,32 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Federal Budget Calculator</title>
+  <title>Suggested Federal Budget by Department</title>
   <style>
     /* Add your custom CSS styles here */
   </style>
 </head>
 <body>
-  <h1>Federal Budget Calculator</h1>
+  <h1>Suggested Federal Budget by Department</h1>
 
+  <!-- Input Fields for GDP -->
+  <h2>GDP:</h2>
   <label for="gdp-growth">GDP Growth (Yearly):</label>
   <input type="number" id="gdp-growth" step="0.01" min="0" required>
 
   <label for="gdp-per-capita">GDP Per Capita:</label>
   <input type="number" id="gdp-per-capita" required>
 
-  <label for="unemployment-rate">Unemployment Rate:</label>
-  <input type="number" id="unemployment-rate" step="0.01" min="0" required>
+  <!-- National Economic Indicators -->
+  <h2>National Economic Indicators:</h2>
+  
+  <!-- Input Fields for Unemployment Rate -->
+  <h3>Unemployment Rate:</h3>
+  <label for="unemployment-blackwater">Blackwater:</label>
+  <input type="number" id="unemployment-blackwater" step="0.01" min="0" required>
 
-  <label for="poverty-rate">Poverty Rate:</label>
-  <input type="number" id="poverty-rate" step="0.01" min="0" required>
+  <label for="unemployment-chesapeake">Chesapeake:</label>
+  <input type="number" id="unemployment-chesapeake" step="0.01" min="0" required>
 
-  <label for="homeless-rate">Homeless Rate:</label>
-  <input type="number" id="homeless-rate" step="0.01" min="0" required>
+  <label for="unemployment-santarosa">Santarosa:</label>
+  <input type="number" id="unemployment-santarosa" step="0.01" min="0" required>
 
-  <label for="economic-score">Overall Economic Score:</label>
-  <input type="number" id="economic-score" required>
+  <!-- Input Fields for National Poverty Rate -->
+  <h3>National Poverty Rate:</h3>
+  <label for="poverty-national-blackwater">Blackwater:</label>
+  <input type="number" id="poverty-national-blackwater" step="0.01" min="0" required>
 
+  <label for="poverty-national-chesapeake">Chesapeake:</label>
+  <input type="number" id="poverty-national-chesapeake" step="0.01" min="0" required>
+
+  <label for="poverty-national-santarosa">Santarosa:</label>
+  <input type="number" id="poverty-national-santarosa" step="0.01" min="0" required>
+
+  <!-- Input Fields for Percentage Below the Poverty Line -->
+  <h3>Percentage Below the Poverty Line:</h3>
+  <label for="poverty-below-blackwater">Blackwater:</label>
+  <input type="number" id="poverty-below-blackwater" step="0.01" min="0" required>
+
+  <label for="poverty-below-chesapeake">Chesapeake:</label>
+  <input type="number" id="poverty-below-chesapeake" step="0.01" min="0" required>
+
+  <label for="poverty-below-santarosa">Santarosa:</label>
+  <input type="number" id="poverty-below-santarosa" step="0.01" min="0" required>
+
+  <!-- Input Fields for Inflation and Interest Rates, National Debt, Manufacturing Jobs, and Median House Price -->
+  <h2>Other Indicators:</h2>
+  
   <label for="inflation-rate">Inflation Rate (Annualized):</label>
   <input type="number" id="inflation-rate" step="0.01" min="0" required>
 
@@ -36,14 +65,16 @@
   <label for="national-debt">National Debt:</label>
   <input type="number" id="national-debt" required>
 
-  <label for="manufacturing-jobs">Manufacturing Jobs:</label>
+  <label for="manufacturing-jobs">Manufacturing Jobs: Approximately</label>
   <input type="number" id="manufacturing-jobs" required>
 
   <label for="median-house-price">Median House Price:</label>
   <input type="number" id="median-house-price" required>
 
+  <!-- Calculate Budget Button -->
   <button id="calculate-button">Calculate Budget</button>
 
+  <!-- Div to Display Result -->
   <div id="budget-result"></div>
 
   <script>
@@ -53,33 +84,43 @@
     });
 
     function calculateBudget() {
+      // Fetching Input Values
       const gdpGrowth = parseFloat(document.getElementById('gdp-growth').value);
       const gdpPerCapita = parseFloat(document.getElementById('gdp-per-capita').value);
-      const unemploymentRate = parseFloat(document.getElementById('unemployment-rate').value);
-      const povertyRate = parseFloat(document.getElementById('poverty-rate').value);
-      const homelessRate = parseFloat(document.getElementById('homeless-rate').value);
-      const economicScore = parseFloat(document.getElementById('economic-score').value);
+      const unemploymentBlackwater = parseFloat(document.getElementById('unemployment-blackwater').value);
+      const unemploymentChesapeake = parseFloat(document.getElementById('unemployment-chesapeake').value);
+      const unemploymentSantarosa = parseFloat(document.getElementById('unemployment-santarosa').value);
+      const povertyNationalBlackwater = parseFloat(document.getElementById('poverty-national-blackwater').value);
+      const povertyNationalChesapeake = parseFloat(document.getElementById('poverty-national-chesapeake').value);
+      const povertyNationalSantarosa = parseFloat(document.getElementById('poverty-national-santarosa').value);
+      const povertyBelowBlackwater = parseFloat(document.getElementById('poverty-below-blackwater').value);
+      const povertyBelowChesapeake = parseFloat(document.getElementById('poverty-below-chesapeake').value);
+      const povertyBelowSantarosa = parseFloat(document.getElementById('poverty-below-santarosa').value);
       const inflationRate = parseFloat(document.getElementById('inflation-rate').value);
       const interestRate = parseFloat(document.getElementById('interest-rate').value);
       const nationalDebt = parseFloat(document.getElementById('national-debt').value);
       const manufacturingJobs = parseFloat(document.getElementById('manufacturing-jobs').value);
       const medianHousePrice = parseFloat(document.getElementById('median-house-price').value);
 
-      // Calculate the budget using more realistic formulas and factors.
-      const economicImpact = (gdpGrowth + (gdpPerCapita / 100)) * (1 - unemploymentRate) * (1 - povertyRate) * (1 - homelessRate);
+      // Calculations
+      const totalUnemployment = (unemploymentBlackwater + unemploymentChesapeake + unemploymentSantarosa) / 3;
+      const totalPovertyNational = (povertyNationalBlackwater + povertyNationalChesapeake + povertyNationalSantarosa) / 3;
+      const totalPovertyBelow = (povertyBelowBlackwater + povertyBelowChesapeake + povertyBelowSantarosa) / 3;
+
+      const economicImpact = (gdpGrowth + (gdpPerCapita / 100)) * (1 - totalUnemployment) * (1 - totalPovertyNational) * (1 - totalPovertyBelow);
       const inflationImpact = economicImpact * (1 - inflationRate);
       const debtInterest = interestRate * nationalDebt;
       const jobsImpact = manufacturingJobs * 5000;
       const housingImpact = medianHousePrice / 2000;
 
-      const budget = economicImpact * economicScore - inflationImpact - debtInterest + jobsImpact - housingImpact;
+      const budget = economicImpact - inflationImpact - debtInterest + jobsImpact - housingImpact;
 
       displayBudgetResult(budget);
     }
 
     function displayBudgetResult(budget) {
       const budgetResult = document.getElementById('budget-result');
-      budgetResult.textContent = `Calculated Budget: $${formatNumber(budget)}`;
+      budgetResult.textContent = `Suggested Federal Budget: $${formatNumber(budget)}`;
     }
 
     function formatNumber(number) {
